@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visionneuse PDF avec plusieurs fichiers</title>
+    <style>
+        #pdf-controls {
+            margin-bottom: 20px;
+            border-radius: 20px;
+            font-size: larger;
+            font-weight: bold;
+        }
+        #pdf-render {
+            margin: 2rem;
+            border: 1px solid #ccc;
+            width: 70%;
+        }
+        #pdf-select{
+            width: 70%;
+            border-radius: 30px;
+            margin: 10px;
+            padding: 5px;
+            font-size: larger;
+            font-weight: bold;
+        }
+        #prev-page, #next-page{
+            border-radius: 30rem;
+            border: 0.5px;
+            padding: 0.5rem;
+            color: #e5e7e6;
+            font-weight: bold;
+            font-size: larger;
+            background-color: rgb(189, 7, 7);
+            
+        }
+
+        #prev-page:hover, #next-page:hover{
+                background-color: rgb(252, 8, 8);
+                transition: padding 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+            }
+
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<header>
+    <h1><strong>Portfolio Salomon Cohen</strong> <br></h1>
+    <ul id="list_menu">
+        <li><a href="https://sca260.github.io/Portfolio/">Home</a></li>
+        <li><a href="index.html#Links"> Links </a></li>
+        <li><a href="#Contact"> Contact </a></li>
+        <li><a href="https://sca260-github-io.translate.goog/Portfolio/?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=wapp">FR</a></li>
+        <li><a href="https://sca260-github-io.translate.goog/Portfolio/?_x_tr_sl=en&_x_tr_tl=ja&_x_tr_hl=fr&_x_tr_pto=wapp">JP</a></li>
+    </ul>
+    <script>
+        $(document).ready(function() {
+            $('#pdf-select').select2();
+        });
+    </script>
+</header>
+<body>
+
+    <h1>PDF reader</h1>
+
+    <!-- Sélecteur de fichiers PDF -->
+    <label for="pdf-select"><H3>Choose the Pdf you want to read :</H3></label>
+    <select id="pdf-select">
+        <option value="./pdf/Présentation-Groupe-1-Raphaël-Elise-Maxence-Tom-Salomon-1970's.pdf">Hearthstone history of video games cards: An Entire deck <br> with only videos games historic references and event in the 70's.</option>
+        <option value="./pdf/Projet_Level_Design_Tile_Groupe_1.pdf">Level Design Project: The challenge was to create a medium difficulty level <br> of the game Fire emblem: sacred stones. (documents in french) (Tiles)</option>
+        <option value="./pdf/cardsh1g1planches_rotated.pdf">The card deck with the descriptions:</option>
+        <option value="./pdf/Blender_3d_models.pdf">3D objects creation (Blender)</option>
+    </select>
+
+    <!-- Contrôles de navigation PDF -->
+    <div id="pdf-controls">
+        <button id="prev-page">Precedent</button>
+        <span>Page : <span id="page-num"></span> / <span id="page-count"></span></span>
+        <button id="next-page">Next</button>
+    </div>
+
+    <!-- Conteneur pour le rendu du PDF -->
+    <canvas id="pdf-render"></canvas>
+
+    <!-- Inclusion de PDF.js via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    
+    <script>
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+        // Configurer le worker de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+
+        var pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            canvas = document.getElementById('pdf-render'),
+            ctx = canvas.getContext('2d');
+
+        // Fonction pour charger et rendre un PDF
+        function loadPDF(url) {
+            pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                document.getElementById('page-count').textContent = pdfDoc.numPages;
+                pageNum = 1; // Réinitialiser à la première page
+                renderPage(pageNum);
+            });
+        }
+
+        // Fonction pour rendre une page
+        function renderPage(num) {
+            pageRendering = true;
+
+            pdfDoc.getPage(num).then(function(page) {
+                var viewport = page.getViewport({ scale: 1.5 });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                var renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                var renderTask = page.render(renderContext);
+
+                renderTask.promise.then(function() {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+
+            document.getElementById('page-num').textContent = num;
+        }
+
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        // Gestion des boutons Précédent/Suivant
+        document.getElementById('next-page').addEventListener('click', function() {
+            if (pageNum >= pdfDoc.numPages) {
+                return;
+            }
+            pageNum++;
+            queueRenderPage(pageNum);
+        });
+
+        document.getElementById('prev-page').addEventListener('click', function() {
+            if (pageNum <= 1) {
+                return;
+            }
+            pageNum--;
+            queueRenderPage(pageNum);
+        });
+
+        // Gestion du changement de fichier PDF via le sélecteur
+        document.getElementById('pdf-select').addEventListener('change', function(event) {
+            var selectedPDF = event.target.value;
+            loadPDF(selectedPDF); // Charger et afficher le PDF sélectionné
+        });
+
+        // Charger le premier PDF par défaut
+        loadPDF(document.getElementById('pdf-select').value);
+    </script>
+
+</body>
+<footer>
+    <section id="Contact">
+        <H3>contact</H3>
+        <a target="_blank" href="mailto:sca260c@gmail.com?subject=Contact-professionel"> Send me an Email: Cohen Salomon</a>
+        <!-- <br><br>
+        <a href="tel:+33658704248">Whatsaap only</a> -->
+        <h5>© Cohen Salomon 2024</h5>
+        <a href="https://www.linkedin.com/in/salomon-cohen-904b87292/" class="linkedin-link">
+            <img src="./images/icons8-linkedin-50.png" alt="Linkedin:" class="linkedin-logo">
+            <span>Salomon Cohen </span>
+        </a>
+    </section>    
+</footer>
+</html>
