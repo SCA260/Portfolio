@@ -105,6 +105,25 @@ body{
                 }
             }
         }
+        .pdf_h{
+            display: flex;
+            align-items: flex-start;
+            width: 1000px;
+            height: 700px;
+            object-fit: contain;
+            background-color: white;
+        }
+        .image{
+            display: flex;
+            align-items: flex-start;
+            width: 400px;
+            height: 400px;
+            /* padding: 15px; */
+            margin: 15px;
+            object-fit: contain;
+            background-color: #252526;
+        }
+
     }
 
     .linkedin-link {
