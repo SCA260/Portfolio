@@ -4,43 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visionneuse PDF avec plusieurs fichiers</title>
-    <style>
-        #pdf-controls {
-            margin-bottom: 20px;
-            border-radius: 20px;
-            font-size: larger;
-            font-weight: bold;
-        }
-        #pdf-render {
-            margin: 10px;
-            border: 1px solid #ccc;
-            width: 90%;
-        }
-        #pdf-select{
-            width: 70%;
-            border-radius: 30px;
-            margin: 10px;
-            padding: 5px;
-            font-size: larger;
-            font-weight: bold;
-        }
-        #prev-page, #next-page{
-            border-radius: 30rem;
-            border: 0.5px;
-            padding: 0.5rem;
-            color: #e5e7e6;
-            font-weight: bold;
-            font-size: larger;
-            background-color: rgb(189, 7, 7);
-            
-        }
-
-        #prev-page:hover, #next-page:hover{
-                background-color: rgb(252, 8, 8);
-                transition: padding 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
-            }
-
-    </style>
     <link rel="stylesheet" href="style.css">
 </head>
 <header>
@@ -65,12 +28,14 @@
     <!-- Sélecteur de fichiers PDF -->
     <label for="pdf-select"><H3>Choose the Pdf you want to read :</H3></label>
     <select id="pdf-select">
-        <option value="./pdf/Présentation-Groupe-1-Raphaël-Elise-Maxence-Tom-Salomon-1970's.pdf">Hearthstone history of video games cards: An Entire deck <br> with only videos games historic references and event in the 70's.</option>
+        <option value="./pdf/Présentation-Groupe-1-Raphaël-Elise-Maxence-Tom-Salomon-1970's.pdf">Hearthstone history of video games cards: An Entire deck <br> with only videos games historic references and event in the 70's (French).</option>
         <option value="./pdf/Projet_Level_Design_Tile_Groupe_1.pdf">Level Design Project: The challenge was to create a medium difficulty level <br> of the game Fire emblem: sacred stones. (documents in french) (Tiles)</option>
         <option value="./pdf/cardsh1g1planches_rotated.pdf">The card deck with the descriptions:</option>
-        <option value="./pdf/Blender_3d_models.pdf">3D objects creation (Blender)</option>
+        <option value="./pdf/Concept-GDD-Regles.pdf">Game-design board game rules: (French)</option>
+        <option value="./pdf/GDD-1.pdf">Game-desing-document: spacecloud (French)</option>
+        <option value="./pdf/Blender_3d_models.pdf">3D objects creation (Blender rendering)</option>
     </select>
-
+ 
     <!-- Contrôles de navigation PDF -->
     <div id="pdf-controls">
         <button id="prev-page">Precedent</button>
@@ -175,6 +140,7 @@
         <H3>contact</H3>
         <a target="_blank" href="mailto:sca260c@gmail.com?subject=Contact-professionel"> Send me an Email: Cohen Salomon</a>
         <!-- <br><br>
+        Haha congrats you find it:
         <a href="tel:+33658704248">Whatsaap only</a> -->
         <h5>© Cohen Salomon 2024</h5>
         <a href="https://www.linkedin.com/in/salomon-cohen-904b87292/" class="linkedin-link">
