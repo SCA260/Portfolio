@@ -164,6 +164,13 @@ body{
 
     }
 
+    @media screen and (min-width: 1330px ) {
+        .card-container {
+            padding-right: 260px;
+            padding-left: 260px;
+        }
+    }
+
     #pdf-controls {
         margin-bottom: 20px;
         border-radius: 20px;
@@ -290,5 +297,6 @@ body{
         #pdf-render{
             width: 80%;
         }
+
     }
     
