@@ -5,11 +5,11 @@ header{
     background: linear-gradient(180deg, rgba(67,58,180,1) 10%, rgba(149,54,175,1) 45%, rgba(158,52,173,1) 48%, rgba(244,31,151,1) 69%, rgba(252,176,69,1) 100%);
     padding: 10px;
     text-align: center;
-    h1{
+}
+header h1{
         display: inline;
         align-items:center;
     }
-}
 
 *{
     text-align: center;
