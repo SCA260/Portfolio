@@ -87,7 +87,7 @@ li{
     ;
 }
 
-image:hover{
+.image:hover{
     color: #e5e7e642;
 }
 .pdf_h{
@@ -101,7 +101,7 @@ image:hover{
 
 body{
     background-color: #e5e7e6;
-    display: flexbox;
+    display: flex;
     .lien_cjp{
         font-size:0.6rem;
     }
